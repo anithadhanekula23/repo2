@@ -1,0 +1,3 @@
+cat is used to create
+display
+copy from one file to another
