@@ -1,0 +1,34 @@
+### audit
+create table audit.stage
+(
+  dataset_name string,
+  table_name string,
+  date_audit date,
+  total_record_count int64,
+  audited_by string
+)
+
+create table audit.history
+(
+  dataset_name string,
+  table_name string,
+  date_audit date,
+  total_record_count int64,
+  audited_by string
+)
+
+insert into audit.stage
+select 'audit' as dataset_name,
+'stage' as table_name,
+current_date() as date_audit,
+count(*) as total_record_count,
+"gcp-bth-9" as audited_by
+from data1.tb3
+
+insert into audit.history
+select 'audit' as dataset_name,
+'history' as table_name,
+current_date() as date_audit,
+count(*) as total_record_count,
+"gcp-bth-9" as audited_by
+from hist.htab
