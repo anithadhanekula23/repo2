@@ -1,0 +1,26 @@
+### created dataset
+### created table based on the dataset created and loaded data into the table from the public datasets
+
+create table if not exists austin.parition as select * from bigquery-public-data.austin_incidents.incidents_2008;
+
+### created partition table and added the schema to the table
+create table austin.paritiondone 
+( unique_key integer,				
+descript	STRING,					
+date 	DATE,					
+time	TIME,					
+address	STRING,					
+longitude	float64,				
+latitude	FLOAT64,				
+location	STRING,					
+timestamp	TIMESTAMP	)
+partition by
+date_trunc(date,month)
+cluster by unique_key;
+
+###inserted data into the partition table
+insert into austin.paritiondone select * from austin.parition
+
+verifing the both tables and checking the amount of size of data
+SELECT * FROM gcp-bth-9.austin.parition WHERE date = "2023-09-06" LIMIT 10;
+SELECT * FROM gcp-bth-9.austin.paritiondone WHERE date = "2023-09-06" LIMIT 10;
